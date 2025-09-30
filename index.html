@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body class="container mt-5">
+    <div class="text-center">
+        <h2 class="text-primary">Преобразование типов данных</h2>
+        <p class="text-muted">Введите значение и выберите тип преобразования</p>
+    </div>
+    <div class="card shadow mt-5">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Конвертер типов данных</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <p class="mb-2">Введите значение:</p>
+                <input type="text" id="inputValue" class="form-control" placeholder="Например: 123, 'hello', true">
+            </div>
+    
+            <div class="mb-3">
+                <p class="mb-2">Выберите тип преобразования:</p>
+                <select id="convertType" class="form-select">
+                    <option value="number">Число (Number)</option>
+                    <option value="string">Строка (String)</option>
+                    <option value="boolean">Логическое значение (Boolean)</option>
+                </select>
+            </div>
+    
+            <div class="text-center mb-4">
+                <button class="btn btn-primary" onclick="convertValue()">Преобразовать</button>
+            </div>
+
+            <div class="alert alert-light text-center" id="result">
+                <p class="mb-0">Результат появится здесь...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        'use strict'
+        
+        function convertValue(){
+            const value = document.getElementById('inputValue').value;
+            const type = document.getElementById('convertType').value;
+
+            let cropValue = value.replace(/\s+/g, "");
+            let result, resultType;
+            
+
+            if ((cropValue.startsWith("'") && cropValue.endsWith("'")) || (cropValue.startsWith('"') && cropValue.endsWith('"'))){ 
+                cropValue = cropValue.slice(1, -1); 
+            }
+
+            if (typeof cropValue === "string") {
+                const lower = cropValue.toLowerCase();
+                if (lower === 'true') cropValue = true;
+                else if (lower === 'false') cropValue = false;
+                else if (lower === 'null') cropValue = null;
+                else if (lower === 'undefined') cropValue = undefined;
+            }
+
+            switch (type) {
+            case "number":
+                result = Number(cropValue);
+                resultType = typeof result;
+                break;
+            case "string":
+                result = String(cropValue);
+                resultType = typeof result;
+                break;
+            case "boolean":
+                if (cropValue === false || cropValue === 0 || cropValue === '' || cropValue === null || cropValue === undefined || cropValue === '0' || cropValue === 'NaN') {
+                    result = false;
+                } else {
+                    result = Boolean(cropValue);
+                }
+                resultType = typeof result;
+                break;
+            }
+            document.getElementById("result").innerHTML = `
+            <p class="text-start"><span class="fw-bold">Исходное значение:</span> ${value}</p>
+            <p class="text-start"><span class="fw-bold">Преобразование в:</span> ${type}</p>
+            <p class="text-start"><span class="fw-bold">Результат:</span> ${result} (тип: ${resultType})</p>`;
+        }
+
+    </script>
+</body>
+</html>
